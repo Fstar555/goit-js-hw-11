@@ -8,5 +8,3 @@ import iziToast from 'izitoast';
 import 'izitoast/dist/css/iziToast.min.css';
 import { fetchPhotoFromPixabay } from './js/pixabay-api';
 import { renderPhotos } from './js/render-functions';
-
-const form = document.querySelector('.search-form');
