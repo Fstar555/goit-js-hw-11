@@ -1,5 +1,5 @@
 export function getImages(query) {
-  const API_KEY = '43067029 - c55b458b38852b6054b39e36e';
+  const API_KEY = '43067029-c55b458b38852b6054b39e36e';
   const baseURL = 'https://pixabay.com/api/?';
   const params = new URLSearchParams({
     key: API_KEY,
