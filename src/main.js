@@ -8,7 +8,7 @@ import 'izitoast/dist/css/iziToast.min.css';
 import SimpleLightbox from 'simplelightbox';
 import 'simplelightbox/dist/simple-lightbox.min.css';
 
-const formEl = document.querySelector('.img-information');
+const formEl = document.querySelector('.form');
 const inputEl = document.querySelector('input');
 const loaderEl = document.querySelector('.loader');
 
