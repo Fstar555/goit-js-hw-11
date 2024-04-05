@@ -1,22 +1,51 @@
-// Описаний у документації
-import SimpleLightbox from 'simplelightbox';
-// Додатковий імпорт стилів
-import 'simplelightbox/dist/simple-lightbox.min.css';
-// Описаний у документації
+import './js/pixabay-api';
+import { getImages } from './js/pixabay-api';
+import './js/render-function';
+import { createMarkUp } from './js/render-function';
+import { galleryEl } from './js/render-function';
 import iziToast from 'izitoast';
-// Додатковий імпорт стилів
 import 'izitoast/dist/css/iziToast.min.css';
-import { fetchPhotoFromPixabay } from './js/pixabay-api';
-import { renderPhotos } from './js/render-functions';
+import SimpleLightbox from 'simplelightbox';
+import 'simplelightbox/dist/simple-lightbox.min.css';
 
-const loader = document.querySelector('.loader');
-const form = document.querySelector('.img-information');
-const searchInput = document.querySelector('.input-img-name');
+const formEl = document.querySelector('.img-information');
+const inputEl = document.querySelector('input');
+const loaderEl = document.querySelector('.loader');
 
-function showLoader() {
-  loader.style.display = 'block';
-}
-function hideLoader() {
-  loader.style.display = 'none';
-}
-//loader.classList.add('hidden');
+formEl.addEventListener('submit', event => {
+  event.preventDefault();
+  loaderEl.classList.add('is-open');
+  galleryEl.innerHTML = '';
+  lightbox.refresh();
+  const queryTrimed = inputEl.value.trim();
+  if (queryTrimed === '') {
+    loaderEl.classList.remove('is-open');
+    return iziToast.warning({
+      title: 'Caution',
+      message: 'Please complete the field!',
+      position: 'topRight',
+    });
+  }
+  getImages(queryTrimed)
+    .then(response => {
+      if (response.hits.length === 0) {
+        return iziToast.info({
+          title: 'Sorry',
+          message:
+            'There are no images matching your search query. Please try again!',
+          position: 'topRight',
+        });
+      }
+      createMarkUp(response.hits);
+    })
+    .catch(error => {
+      console.error('Error fetching images:', error);
+    })
+    .finally(() => loaderEl.classList.remove('is-open'));
+  inputEl.value = '';
+});
+
+const lightbox = new SimpleLightbox('.gallery-link', {
+  captionsData: 'alt',
+  captionDelay: 250,
+});
